@@ -1,0 +1,70 @@
+class Todo {
+    constructor() {
+        this.state = [{ value: "Mokytis JS", editable: false, checked: false }];
+    }
+ 
+    addItem(value) {
+        const state = this.state.map(it => ({ ...it }));
+        state.push({ value, editable: false, done: false });
+        this.state = [...state];
+    }
+ 
+    removeItem(index) {
+        this.state.filter((todo, i) => index !== i);
+    }
+ 
+    editItem(index) {
+        this.state.map((todo, i) =>
+            index === i ? { ...todo, editable: true } : todo
+        );
+    }
+ 
+    checkItem(index) {
+        this.state.map((todo, i) =>
+            index === i ? { ...todo, checked: true } : it
+        );
+    }
+}
+ 
+const todo = new Todo();
+const todoContainer = document.getElementsByClassName("todo-list-container")[0];
+ 
+const createElement = (value = "") => {
+    const todoList = document.createElement("div");
+    const todoItem = document.createElement("div");
+    const field = document.createElement("div");
+    const input = document.createElement("input");
+    const button = document.createElement("button");
+    todoList.classList.add("todo-list");
+    todoItem.classList.add("todo");
+    field.classList.add("field");
+    input.classList.add("inputField");
+    button.classList.add("add-todo");
+    button.innerHTML = "Pridėti užduotį";
+    todoItem.innerHTML = value;
+    field.appendChild(input);
+    field.appendChild(button);
+    todoList.appendChild(todoItem);
+    todoContainer.appendChild(field);
+    return todoList;
+};
+ 
+todo.state.forEach(todo => {
+    console.log("nėra lygu");
+    todoContainer.appendChild(createElement(todo.value));
+});
+ 
+const field = document.querySelector("input");
+const button = document.querySelector("button");
+const todoListItem = document.querySelector(".todo-list");
+ 
+button.addEventListener("click", () => {
+    todo.addItem(field.value);
+    console.log("BŪSENA", todo.state);
+ 
+    const todoItem = document.createElement("div");
+    todoItem.classList.add("todo");
+    todoItem.innerHTML = field.value;
+    todoListItem.appendChild(todoItem);
+    field.value = "";
+});
